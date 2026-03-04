@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Clock, Dumbbell } from 'lucide-react'
 import { workoutPlans } from '../data/workoutPlans'
-import { difficultyNames, categoryNames } from '../types'
+import { difficultyNames } from '../types'
 
 function Plans() {
   return (

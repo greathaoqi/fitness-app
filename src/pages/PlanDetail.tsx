@@ -1,7 +1,8 @@
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Clock, Dumbbell, ArrowLeft, Play } from 'lucide-react'
 import { getWorkoutPlanById } from '../data/workoutPlans'
-import { getExerciseById, difficultyNames, categoryNames } from '../types'
+import { getExerciseById } from '../data/exercises'
+import { difficultyNames, categoryNames } from '../types'
 import './PlanDetail.css'
 
 function PlanDetail() {

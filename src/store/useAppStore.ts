@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { WorkoutPlan, WorkoutLog, LogExercise } from '../types'
+import type { WorkoutLog, LogExercise, WorkoutPlan } from '../types'
 
 interface WorkoutSession {
   exerciseIndex: number
@@ -184,15 +184,15 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   // 完成训练
   completeWorkout: () => {
-    const { session, activeWorkout } = get()
-    if (!session || !activeWorkout) return
+    const state = get()
+    if (!state.session || !state.activeWorkout) return
     
     const log: WorkoutLog = {
       id: Date.now().toString(),
-      planId: activeWorkout.id,
+      planId: state.activeWorkout.id,
       date: new Date().toISOString(),
       completed: true,
-      exercises: session.completedExercises
+      exercises: state.session.completedExercises
     }
     
     set({
@@ -226,7 +226,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   // 计时器滴答
   tick: () => {
-    const { session, activeWorkout } = get()
+    const { session } = get()
     if (!session) return
     
     let newSession = { ...session }

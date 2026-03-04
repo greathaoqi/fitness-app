@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# 💪 健身训练 App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**个人专用的家庭健身训练应用，支持电视投屏**
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 产品定位
 
-## React Compiler
+一款**个人专用的家庭健身训练 App**，支持手机投屏到电视，提供大屏健身体验。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ 核心功能
 
-## Expanding the ESLint configuration
+- 📋 **6 个训练计划** - 从初级到高级，10-30 分钟灵活选择
+- 🏋️ **18 个标准动作** - 胸、背、腿、肩、臂、核心、有氧全覆盖
+- ⏱️ **智能计时器** - 训练/休息自动切换，组数记录
+- 📺 **电视投屏** - 手机投屏到电视，大屏跟随训练
+- 📊 **训练记录** - 自动保存每次训练数据
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 快速开始
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# 安装依赖
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 开发模式
+npm run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 生产构建
+npm run build
+
+# 预览构建
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📦 训练计划
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| 计划 | 时长 | 难度 | 动作数 |
+|------|------|------|--------|
+| 全身入门训练 | 20min | 🟢 初级 | 5 |
+| 晨间唤醒训练 | 10min | 🟢 初级 | 5 |
+| 上肢力量训练 | 30min | 🟡 中级 | 6 |
+| 下肢力量训练 | 30min | 🟡 中级 | 5 |
+| 核心强化训练 | 15min | 🟡 中级 | 5 |
+| HIIT 有氧燃脂 | 20min | 🔴 高级 | 5 |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠️ 技术栈
+
+- **框架**: React 19 + TypeScript
+- **构建**: Vite 7
+- **路由**: React Router v6
+- **状态管理**: Zustand
+- **图标**: Lucide React
+- **部署**: Vercel
+
+## 📺 投屏说明
+
+### 方式 1：Android 系统投屏（推荐）
+1. 手机下拉打开控制中心
+2. 点击"无线投屏"或"Smart View"
+3. 选择你的三星电视
+4. 手机屏幕镜像到电视
+
+### 方式 2：WebSocket 投屏（开发中）
+- 手机启动 WebSocket 服务器
+- 电视浏览器访问连接
+- 实时同步训练状态
+
+## 🌐 线上地址
+
+[https://fitness-app-gilt.vercel.app](https://fitness-app-gilt.vercel.app)
+
+## 📄 文档
+
+- [产品需求文档 (PRD)](./PRD.md)
+- [技能文档](../skills/)
+
+## 📝 开发计划
+
+- [x] 核心页面开发（首页、计划、训练中）
+- [ ] 投屏功能完善
+- [ ] 历史记录页面
+- [ ] 数据统计
+- [ ] UI 优化
+
+## 📄 License
+
+MIT
+
+---
+
+**Created by greathaoqi**

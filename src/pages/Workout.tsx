@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Play, CheckCircle, SkipForward, XCircle, ArrowLeft } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import { getWorkoutPlanById } from '../data/workoutPlans'
-import { getExerciseById, difficultyNames } from '../types'
+import { getExerciseById } from '../data/exercises'
+import { difficultyNames } from '../types'
 import Timer from '../components/Timer'
 import './Workout.css'
 
@@ -19,7 +20,6 @@ function Workout() {
     nextExercise,
     prevExercise,
     nextSet,
-    startRest,
     stopRest,
     completeWorkout,
     cancelWorkout,
@@ -222,7 +222,7 @@ function Workout() {
               <div className="instructions">
                 <h4>动作要点：</h4>
                 <ul>
-                  {currentExercise.instructions.map((instruction, i) => (
+                  {currentExercise.instructions.map((instruction: string, i: number) => (
                     <li key={i}>{instruction}</li>
                   ))}
                 </ul>

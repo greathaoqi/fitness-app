@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Dumbbell, History, Play } from 'lucide-react'
+import { Dumbbell, History } from 'lucide-react'
 import { workoutPlans } from '../data/workoutPlans'
 import { difficultyNames } from '../types'
 
