@@ -1,9 +1,11 @@
 /* Home Page */
 .home {
   min-height: 100vh;
+  width: 100%;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   color: white;
   padding-bottom: 40px;
+  position: relative;
 }
 
 /* Hero Section */
