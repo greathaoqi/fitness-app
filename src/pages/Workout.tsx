@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Play, CheckCircle, SkipForward, XCircle, ArrowLeft } from 'lucide-react'
+import { Play, CheckCircle, SkipForward, XCircle, ArrowLeft, Volume2, VolumeX } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import { getWorkoutPlanById } from '../data/workoutPlans'
 import { getExerciseById } from '../data/exercises'
 import { difficultyNames } from '../types'
+import { coach } from '../utils/speech'
+import { sounds } from '../utils/sounds'
 import Timer from '../components/Timer'
 import './Workout.css'
 
@@ -28,6 +30,9 @@ function Workout() {
 
   const [showConfirmExit, setShowConfirmExit] = useState(false)
   const [isCasting, setIsCasting] = useState(false)
+  const [voiceEnabled, setVoiceEnabled] = useState(true)
+  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [initialized, setInitialized] = useState(false)
 
   // 初始化训练
   useEffect(() => {
@@ -35,11 +40,56 @@ function Workout() {
       const plan = getWorkoutPlanById(planId)
       if (plan) {
         startWorkout(plan)
+        // 启用音效（需要用户交互）
+        sounds.enable()
       } else {
         navigate('/plans')
       }
     }
   }, [planId, isWorkoutActive, navigate, startWorkout])
+
+  // 语音提示
+  useEffect(() => {
+    if (!initialized || !activeWorkout || !session) return
+
+    const currentExerciseData = activeWorkout.exercises[session.exerciseIndex]
+    const currentExercise = getExerciseById(currentExerciseData.exerciseId)
+
+    if (voiceEnabled) {
+      // 第一个动作开始时播报
+      if (session.exerciseIndex === 0 && session.currentSet === 1 && !session.isResting) {
+        coach.startWorkout(activeWorkout.name)
+        setTimeout(() => {
+          if (currentExercise) {
+            coach.startExercise(currentExercise.name, currentExerciseData.sets, currentExerciseData.reps)
+          }
+        }, 1500)
+      }
+
+      // 动作切换时播报
+      if (session.exerciseIndex > 0 && session.currentSet === 1 && !session.isResting) {
+        if (currentExercise) {
+          coach.startExercise(currentExercise.name, currentExerciseData.sets, currentExerciseData.reps)
+        }
+      }
+
+      // 休息开始
+      if (session.isResting && session.restSecondsLeft === currentExerciseData.restSeconds) {
+        const nextEx = activeWorkout.exercises[session.exerciseIndex + 1]
+        if (nextEx) {
+          const nextExercise = getExerciseById(nextEx.exerciseId)
+          coach.startRest(currentExerciseData.restSeconds, nextExercise?.name || '下一动作')
+        }
+      }
+    }
+  }, [initialized, activeWorkout, session, voiceEnabled])
+
+  // 标记已初始化
+  useEffect(() => {
+    if (isWorkoutActive && !initialized) {
+      setInitialized(true)
+    }
+  }, [isWorkoutActive, initialized])
 
   // 计时器
   useEffect(() => {
@@ -49,14 +99,23 @@ function Workout() {
       tick()
       
       // 检查是否完成
-      const { session } = useAppStore.getState()
-      if (session && session.workoutSecondsLeft <= 0) {
+      const state = useAppStore.getState()
+      if (state.session && state.session.workoutSecondsLeft <= 0) {
         completeWorkout()
+      }
+
+      // 倒计时语音和音效
+      const { session } = useAppStore.getState()
+      if (session) {
+        if (session.isResting && session.restSecondsLeft <= 3 && session.restSecondsLeft > 0) {
+          if (voiceEnabled) coach.countdownTick(session.restSecondsLeft)
+          if (soundEnabled) sounds.playCountdownTick(session.restSecondsLeft)
+        }
       }
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [isWorkoutActive, tick, completeWorkout])
+  }, [isWorkoutActive, tick, completeWorkout, voiceEnabled, soundEnabled])
 
   // 获取当前动作
   if (!activeWorkout || !session) {
@@ -69,32 +128,55 @@ function Workout() {
   const progress = ((session.exerciseIndex + 1) / activeWorkout.exercises.length) * 100
 
   // 处理完成当前组
-  const handleCompleteSet = () => {
-    if (session.isResting) {
+  const handleCompleteSet = useCallback(() => {
+    if (session?.isResting) {
       stopRest()
+      if (soundEnabled) sounds.play('complete')
     } else {
       nextSet()
+      if (soundEnabled) sounds.play('complete')
+      if (voiceEnabled) {
+        const currentExerciseData = activeWorkout.exercises[session.exerciseIndex]
+        coach.completeSet(session.currentSet, currentExerciseData.sets)
+      }
     }
-  }
+  }, [session, stopRest, nextSet, soundEnabled, voiceEnabled, activeWorkout])
 
   // 处理跳过
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     if (session.exerciseIndex < activeWorkout.exercises.length - 1) {
       nextExercise()
+      if (soundEnabled) sounds.play('rest')
     } else {
       completeWorkout()
+      if (voiceEnabled) coach.completeWorkout(activeWorkout.name)
+      if (soundEnabled) sounds.play('complete')
     }
-  }
+  }, [session, nextExercise, completeWorkout, soundEnabled, voiceEnabled, activeWorkout])
 
   // 处理退出
-  const handleExit = () => {
+  const handleExit = useCallback(() => {
     if (showConfirmExit) {
       cancelWorkout()
       navigate('/')
     } else {
       setShowConfirmExit(true)
     }
-  }
+  }, [showConfirmExit, cancelWorkout, navigate])
+
+  // 切换语音
+  const toggleVoice = useCallback(() => {
+    setVoiceEnabled(prev => {
+      const newValue = !prev
+      if (!newValue) coach.stop()
+      return newValue
+    })
+  }, [])
+
+  // 切换音效
+  const toggleSound = useCallback(() => {
+    setSoundEnabled(prev => !prev)
+  }, [])
 
   // 渲染准备状态
   if (!isWorkoutActive) {
@@ -169,13 +251,29 @@ function Workout() {
             动作 {session.exerciseIndex + 1} / {activeWorkout.exercises.length}
           </p>
         </div>
-        <button 
-          className="cast-btn" 
-          onClick={() => setIsCasting(!isCasting)}
-          title="投屏"
-        >
-          📺
-        </button>
+        <div className="header-actions">
+          <button 
+            className="icon-btn" 
+            onClick={toggleVoice}
+            title={voiceEnabled ? '关闭语音' : '开启语音'}
+          >
+            {voiceEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+          </button>
+          <button 
+            className="icon-btn" 
+            onClick={toggleSound}
+            title={soundEnabled ? '关闭音效' : '开启音效'}
+          >
+            {soundEnabled ? '🔔' : '🔕'}
+          </button>
+          <button 
+            className="cast-btn" 
+            onClick={() => setIsCasting(!isCasting)}
+            title="投屏"
+          >
+            📺
+          </button>
+        </div>
       </div>
 
       {/* 主要内容 */}
