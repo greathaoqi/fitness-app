@@ -7,6 +7,7 @@ import { getExerciseById } from '../data/exercises'
 import { difficultyNames } from '../types'
 import { coach } from '../utils/speech'
 import { sounds } from '../utils/sounds'
+import ExerciseGif from '../components/ExerciseGif'
 import Timer from '../components/Timer'
 import './Workout.css'
 
@@ -301,6 +302,11 @@ function Workout() {
         ) : (
           // 训练状态
           <div className="exercise-container">
+            {/* 动作 GIF 演示 */}
+            {currentExercise && (
+              <ExerciseGif exerciseId={currentExercise.id} />
+            )}
+
             <div className="exercise-info">
               <div className="set-info">
                 <span>第 {session.currentSet} 组 / 共 {currentExerciseData.sets} 组</span>
