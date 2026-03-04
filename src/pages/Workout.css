@@ -1,0 +1,490 @@
+/* Workout Page */
+.workout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+  position: relative;
+}
+
+.workout.resting {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1f3d 100%);
+}
+
+/* Progress Bar */
+.workout-progress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  transition: width 0.3s ease;
+}
+
+/* Header */
+.workout-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 16px;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.header-info {
+  flex: 1;
+}
+
+.header-info h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.header-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.cast-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cast-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Content */
+.workout-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Prep State */
+.workout-prep .prep-content {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.prep-content h2 {
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.prep-info {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.prep-info p {
+  margin: 12px 0;
+  font-size: 18px;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  border: none;
+  color: white;
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* Complete State */
+.workout-complete .complete-content {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.complete-icon {
+  color: #4CAF50;
+  margin-bottom: 24px;
+}
+
+.complete-content h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.complete-content p {
+  font-size: 18px;
+  color: #888;
+  margin-bottom: 32px;
+}
+
+.complete-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.complete-stats .stat {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px 32px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.complete-stats .stat .label {
+  display: block;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.complete-stats .stat .value {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.home-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Rest Container */
+.rest-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.rest-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.rest-container h2 {
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.next-exercise {
+  margin-top: 32px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+}
+
+.next-exercise p {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.next-exercise h3 {
+  font-size: 22px;
+  margin: 0;
+  color: #4CAF50;
+}
+
+/* Exercise Container */
+.exercise-container {
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.exercise-info {
+  margin-bottom: 24px;
+}
+
+.set-info {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.target-info {
+  font-size: 20px;
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.instructions {
+  margin-top: 32px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.instructions h4 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #888;
+}
+
+.instructions ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin: 8px 0;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* Actions */
+.workout-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.action-btn {
+  border: none;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.prev {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.action-btn.complete {
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  color: white;
+  padding: 14px 32px;
+}
+
+.action-btn.skip {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #1a1a2e;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal h3 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.modal p {
+  color: #888;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.btn-exit {
+  background: #f44336;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Cast Modal */
+.cast-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.cast-content {
+  background: #1a1a2e;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.cast-content h3 {
+  margin: 0 0 16px;
+  font-size: 22px;
+}
+
+.cast-content p {
+  color: #888;
+  margin-bottom: 16px;
+}
+
+.cast-content ol {
+  color: #ccc;
+  margin-bottom: 24px;
+  padding-left: 20px;
+}
+
+.cast-content li {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.btn-ok {
+  width: 100%;
+  background: #4CAF50;
+  border: none;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Loading */
+.workout-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a2e;
+  color: white;
+  font-size: 18px;
+}
+
+/* TV/大屏优化 */
+@media (min-width: 1024px) {
+  .workout-header {
+    padding: 24px 40px;
+  }
+
+  .header-info h2 {
+    font-size: 28px;
+  }
+
+  .header-info p {
+    font-size: 18px;
+  }
+
+  .workout-content {
+    padding: 40px;
+  }
+
+  .exercise-container {
+    max-width: 700px;
+  }
+
+  .instructions {
+    font-size: 18px;
+    padding: 32px;
+  }
+
+  .action-btn {
+    padding: 18px 32px;
+    font-size: 18px;
+  }
+}
