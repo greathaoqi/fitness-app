@@ -12,8 +12,9 @@ function ExerciseGif({ exerciseId, autoPlay = false }: ExerciseGifProps) {
   const gifs = getExerciseGifs(exerciseId)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
 
-  if (!gifs || gifs.length === 0) {
+  if (!gifs || gifs.length === 0 || hasError) {
     return (
       <div className="exercise-gif-placeholder">
         <div className="placeholder-icon">🏋️</div>
@@ -51,7 +52,10 @@ function ExerciseGif({ exerciseId, autoPlay = false }: ExerciseGifProps) {
           alt="Exercise demonstration"
           className={`gif-image ${isLoading ? 'loading' : 'loaded'}`}
           onLoad={handleImageLoad}
-          onError={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false)
+            setHasError(true)
+          }}
         />
 
         {gifs.length > 1 && (

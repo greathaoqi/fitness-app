@@ -303,7 +303,7 @@ function Workout() {
           // 训练状态
           <div className="exercise-container">
             {/* 动作 GIF 演示 */}
-            {currentExercise && (
+            {currentExercise && currentExercise.id && (
               <ExerciseGif exerciseId={currentExercise.id} />
             )}
 
